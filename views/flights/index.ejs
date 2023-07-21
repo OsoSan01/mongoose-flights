@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+
+<h2 class="userFlights">Your Flights</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Airline</th>
+      <th>Airport</th>
+      <th>Flight Number</th>
+      <th>Departing from: </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% flights.forEach(function(f) { %>
+      <tr>
+        <td><%= f.airline %></td>
+        <td><%= f.airport %></td>
+        <td><%= f.flightNo %></td>
+        <td><%= f.departs %></td>
+      <td><%= f.book ? 'Heck Yeah!' : 'Just browsing' %></td>
+    </tr>
+  <% }); %>
+  </tbody>
+</table>
