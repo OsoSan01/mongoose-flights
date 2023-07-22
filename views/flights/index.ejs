@@ -7,7 +7,8 @@
       <th>Airline</th>
       <th>Airport</th>
       <th>Flight Number</th>
-      <th>Departing from: </th>
+      <th>Departing from</th>
+      <th>Actions</th> <!-- Add a new column for actions -->
     </tr>
   </thead>
   <tbody>
@@ -17,8 +18,12 @@
         <td><%= f.airport %></td>
         <td><%= f.flightNo %></td>
         <td><%= f.departs %></td>
-      <td><%= f.book ? 'Heck Yeah!' : 'Just browsing' %></td>
-    </tr>
-  <% }); %>
+        <td>
+          <a href="/flights/<%= f._id %>">Detail</a>
+        </td>
+      </tr>
+    <% }); %>
   </tbody>
 </table>
+
+<%- include('../partials/header') %>

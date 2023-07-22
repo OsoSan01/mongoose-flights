@@ -1,0 +1,30 @@
+<!-- views/flights/edit.ejs -->
+
+<%- include('../partials/header') %>
+
+<h2>Edit Flight</h2>
+<form action="/flights/<%= flight._id %>" method="POST">
+  <label for="airline">Airline:</label>
+  <input type="text" id="airline" name="airline" value="<%= flight.airline %>" required><br>
+
+  <label for="airport">Airport:</label>
+  <select id="airport" name="airport" required>
+    <option value="AUS" <%= flight.airport === 'AUS' ? 'selected' : '' %>>Australia</option>
+    <option value="DFW" <%= flight.airport === 'DFW' ? 'selected' : '' %>>Dallas</option>
+    <option value="DEN" <%= flight.airport === 'DEN' ? 'selected' : '' %>>Denver</option>
+    <option value="LAX" <%= flight.airport === 'LAX' ? 'selected' : '' %>>Los Angeles</option>
+    <option value="SAN" <%= flight.airport === 'SAN' ? 'selected' : '' %>>San Francisco</option>
+    <option value="MXN" <%= flight.airport === 'MXN' ? 'selected' : '' %>>Mexico</option>
+    <option value="DXB" <%= flight.airport === 'DXB' ? 'selected' : '' %>>Dubai</option>
+  </select><br>
+
+  <label for="flightNo">Flight Number:</label>
+  <input type="number" id="flightNo" name="flightNo" value="<%= flight.flightNo %>" min="10" max="9999" required><br>
+  <label>Departing date:
+    <input type="datetime-local" id="departs" name="departs" value="<%= formatDate(flight.departs) %>" required><br>
+  <button type="submit">Update Flight</button>
+</form>
+
+<%- include('../partials/footer') %>
+
+<script src="/js/scripts.js"></script>
