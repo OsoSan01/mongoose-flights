@@ -29,11 +29,12 @@
   <label>Departing date:
     <input type="datetime-local" name="departure" required>
   </label><br>
-  <label>Book now?
-    <input type="checkbox" name="book">
-  </label><br>
+  <form action="/flights/:id/tickets" method="POST">
+        <label for="seat">Seat:</label>
+    <input type="text" name="seat" id="seat" required pattern="[A-F][1-9]\d?">
   <button type="submit">Add Flight</button>
 </form>
+
 <p><%= errorMsg %></p>
 
 <%- include('../partials/footer') %>

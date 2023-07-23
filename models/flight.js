@@ -13,6 +13,24 @@ const destinationSchema = new Schema({
   },
 });
 
+const ticketSchema = new Schema ({
+    seat: {
+      type: String,
+      requires: true,
+      match: /^[A-F][1-9]\d?$/,
+    },
+    price : {
+      type: Number,
+      require: true,
+      min: 0,
+    },
+    flight: {
+      type: Schema.Types.ObjectId,
+      ref: 'Flight',
+      required: true,
+    }
+});
+
 const flightSchema = new Schema({
   airline: {
     type: String,
@@ -40,13 +58,22 @@ const flightSchema = new Schema({
     },
   },
   destinations: {
-    type: [destinationSchema], // Array of destination subdocuments
+    type: [destinationSchema],
     default: [],
   },
+  tickets: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Ticket',
+  }],
 });
 
 
 const Flight = mongoose.model('Flight', flightSchema);
 const Destination = mongoose.model('Destination', destinationSchema);
+const Ticket = mongoose.model('Ticket', ticketSchema);
 
-module.exports = mongoose.model('Flight', flightSchema);
+module.exports = {
+  Flight,
+  Destination,
+  Ticket
+};

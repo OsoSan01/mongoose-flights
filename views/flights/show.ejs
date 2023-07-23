@@ -11,6 +11,7 @@
     <li><%= destination.airport %> (Arrival: <%= destination.arrival %>)</li>
   <% }); %>
 </ul>
+
 <h3>Add Destination:</h3>
 <form action="/flights/<%= flight._id %>/destinations" method="POST">
   <label>Airport Code:
@@ -24,29 +25,28 @@
       <option value="DXB">DXB - Dubai</option>
     </select>
   </label><br>
+
   <label>Arrival Date/Time:
-    <input type="datetime-local" name="arrival" required>
+    <input type="date" name="arrival" required>
   </label><br>
-  <button type="submit">Add Destination</button>
+
+  <button type="submit" id:'destination'>Add Destination</button>
 </form>
 
-<div>
-  <a href="/flights/<%= flight._id %>/edit">Edit Flight</a>
-  <form action="/flights/<%= flight._id %>?_method=DELETE" method="POST">
-    <button type="submit">Delete Flight</button>
-  </form>
-</div>
+<h2>Tickets for this Flight</h2>
+<%- include('tickets') %>
 
-<%- include('../partials/header') %>
+<!-- Form to Add New Ticket -->
+<form action="/flights/<%= flight._id %>/tickets" method="post">
+  <label>Seat:
+    <input type="text" name="seat" required pattern="[A-F][1-9]\d?">
+  </label><br>
 
-<script>
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
-    const hours = ('0' + date.getHours()).slice(-2);
-    const minutes = ('0' + date.getMinutes()).slice(-2);
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-  }
-</script>
+  <label>Price:
+    <input type="number" name="price" min="0" required>
+  </label><br>
+
+  <button type="submit" id: 'addTicket'>Add Ticket</button>
+</form>
+
+<%- include('../partials/footer') %>

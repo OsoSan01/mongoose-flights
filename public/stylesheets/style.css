@@ -1,12 +1,42 @@
-body {
+*{
+  box-sizing: border-box;
+}
+
+body {  
   padding: 50px;
   font-family: 'Open Sans', sans-serif;
   font-family: 'Quicksand', sans-serif;
-  background-color: #fdfff0;
+  background-color: #53a8b6;
 }
+
 
 .userFlights {
   font-size: 40px;
   text-align: center;
   
+}
+
+
+a:link {
+  color: #fdffcd;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #c24d2c;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #f1b963;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+a:active {
+  color: #ffc93c;
+  background-color: transparent;
+  text-decoration: underline;
 }

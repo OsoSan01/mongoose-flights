@@ -1,0 +1,13 @@
+
+
+<h2>Tickets for Flight <%= flight.flightNo %></h2>
+
+<ul>
+  <% for (const ticket of tickets) { %>
+    <li>
+      Seat: <%= ticket.seat %>
+      Price: <%= ticket.price %>
+    </li>
+  <% } %>
+</ul>
+

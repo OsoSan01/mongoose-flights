@@ -1,4 +1,5 @@
-const Flight = require('../models/flight');
+const Flight = require('../models/flight').Flight;
+const Ticket = require('../models/flight').Ticket;
 
 
 module.exports = {
@@ -7,55 +8,55 @@ module.exports = {
   create,
   show,
   addDestination,
-  editFlight,
-  updateFlight,
-  deleteFlight,
 };
 
 async function index(req, res) {
-    const flights = await Flight.find({});
-    res.render('flights/index', { title: 'Your Flights', flights });
-  }
+  try {
+    // Populate the 'tickets' property for each flight
+    const flights = await Flight.find({}).populate('tickets');
 
+    res.render('flights/index', { title: 'Your Flights', flights });
+  } catch (err) {
+    console.log(err);
+    res.render('error', {
+      message: 'Internal Server Error',
+      error: { status: 500, stack: err.stack },
+    });
+  }
+}
 
 function newFlight(req, res) {
-  // We'll want to be able to render an  
-  // errorMsg if the create action fails
   res.render('flights/new', { errorMsg: '' });
 }
 
 async function create(req, res) {
   try {
-    await Flight.create(req.body);
-    // Always redirect after CRUDing data
-    // We'll refactor to redirect to the movies index after we implement it
-    res.redirect('/flights');  // Update this line
+    req.body.flight = req.params.id; // Add the flight property to req.body
+    await Ticket.create(req.body); // Create the ticket
+
+    res.redirect(`/flights/${req.params.id}`);
   } catch (err) {
-    // Typically some sort of validation error
     console.log(err);
-    res.render('flights/new', { errorMsg: err.message });
+    res.redirect('/flights');
   }
 }
 
 async function show(req, res) {
-  const flightId = req.params.flightId;
-
   try {
-    const flight = await Flight.findById(flightId);
-    if (!flight) {
-      return res.status(404).render('error', { error: 'Flight not found' });
-    }
+    const flight = await Flight.findById(req.params.id);
+    // Query the tickets that belong to the flight using the flight's _id
+    const tickets = await Ticket.find({ flight: flight._id });
 
-    res.render('flights/show', { flight });
-  } catch (error) {
-    res.status(500).render('error', { error: 'Internal Server Error' });
+    res.render('flights/show', { flight, tickets });
+  } catch (err) {
+    console.log(err);
+    res.redirect('/flights'); // Redirect to the flights index or handle the error appropriately
   }
 }
 
 async function addDestination(req, res) {
   const flightId = req.params.flightId;
   const { airport, arrival } = req.body;
-
   try {
     const flight = await Flight.findById(flightId);
     if (!flight) {
@@ -71,80 +72,7 @@ async function addDestination(req, res) {
     };
     flight.destinations.push(newDestination);
     await flight.save();
-
     res.redirect(`/flights/${flightId}`);
-  } catch (error) {
-
-    res.status(500).render('error', {
-      message: 'Internal Server Error',
-      error: { status: 500, stack: error.stack },
-    });
-  }
-}
-
-async function editFlight(req, res) {
-  const flightId = req.params.flightId;
-
-  try {
-    const flight = await Flight.findById(flightId);
-    if (!flight) {
-      return res.status(404).render('error', {
-        message: 'Flight not found',
-        error: { status: 404 },
-      });
-    }
-
-    res.render('flights/edit', { flight }); // Make sure this line is correct
-  } catch (error) {
-    res.status(500).render('error', {
-      message: 'Internal Server Error',
-      error: { status: 500, stack: error.stack },
-    });
-  }
-}
-
-// Controller function to update a flight
-async function updateFlight(req, res) {
-  const flightId = req.params.flightId;
-  const { airline, airport, flightNo, departs } = req.body;
-
-  try {
-    const flight = await Flight.findByIdAndUpdate(
-      flightId,
-      {
-        airline,
-        airport,
-        flightNo,
-        departs,
-      },
-      { new: true }
-    );
-
-    res.redirect(`/flights/${flight._id}`);
-  } catch (error) {
-    res.status(500).render('error', {
-      message: 'Internal Server Error',
-      error: { status: 500, stack: error.stack },
-    });
-  }
-}
-
-// Controller function to delete a flight
-async function deleteFlight(req, res) {
-  const flightId = req.params.flightId;
-
-  try {
-    // Find the flight and delete it from the database
-    const flight = await Flight.findByIdAndRemove(flightId);
-    
-    if (!flight) {
-      return res.status(404).render('error', {
-        message: 'Flight not found',
-        error: { status: 404 },
-      });
-    }
-
-    res.redirect('/flights');
   } catch (error) {
     res.status(500).render('error', {
       message: 'Internal Server Error',
