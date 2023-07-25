@@ -1,7 +1,7 @@
 <%- include('../partials/header') %>
 
 <h1>Create new Ticket</h1>
-    <form action='/flights/<%= flight._id %>' method='POST' > 
+<form id="add-ticket-form" action="/flights/<%= flight._id %>/tickets" method="POST">
 <label for="seat">Seat</label>
 <input type="text" pattern="[A-F][1-9]\d?" required="true">
 <label for="price">Price</label>

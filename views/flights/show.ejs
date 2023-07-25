@@ -34,13 +34,33 @@
 </form>
 
 <h2>Tickets for this Flight</h2>
-<%- include('tickets') %>
+
 
 <!-- Form to Add New Ticket -->
-<form action="/flights/<%= flight._id %>/tickets/new" method="post">
+<form action="/flights/<%= flight._id %>/tickets/new">
   
 
   <button type="submit" id: 'addTicket'>Add Ticket</button>
 </form>
+
+<h2>Tickets List</h2>
+  <table>
+    <thead>
+      <th>Seat</th>
+      <th>Price (AUD)</th>
+    </thead>
+    <tbody>
+      <% tickets.forEach(function(ticket) { %>
+        <tr>
+          <td>
+            <%= ticket.seat %>
+          </td>
+          <td>
+            <%= ticket.price %>
+          </td>
+        </tr>
+        <% }) %>
+    </tbody>
+  </table>
 
 <%- include('../partials/footer') %>

@@ -1,28 +1,24 @@
 const Flight = require('../models/flight').Flight;
 const Ticket = require('../models/ticket');
 
-async function create(req, res) {
-    try {
-      // Add the flight property to req.body before creating the ticket
-      // req.body.flight = req.params.id;
-      const flight = await Flight.findById(req.params.id)
-      // Create the ticket
-      await Ticket.create(req.body);
-        await Ticket.save();
-  
-      // Redirect back to the flight's show view
-      res.redirect(`/flights/${flight._id}`);
-    } catch (err) {
-      console.log(err);
-      res.redirect('/flights/'); // Redirect to the flights index or handle the error appropriately
-    }
-  }
+async function newTicket(req, res) {
+  //Sort performers by their name
+  try {
+    const tickets = await Ticket.find({}).sort('seat');
+    const flight = await Flight.findById(req.params.id);
+    res.render('tickets/new', { title: 'Add Ticket', tickets, flight });
+  } catch (err) { }
+}
 
-  function newTicket(req, res) {
-  // Use the flight ID from req.params to get the flight information
-  const flight = Flight.findById(req.params.id)
-    res.render('tickets/new', { flight });
-  };
+async function create(req, res) {
+  try {
+    req.body.flight = req.params.id;
+    await Ticket.create(req.body);
+  } catch (err) {
+    console.log(err);
+  }
+  res.redirect(`/flights/${req.params.id}`);
+}
   
   
   module.exports = {
