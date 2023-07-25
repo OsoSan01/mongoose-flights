@@ -9,8 +9,6 @@
       <th>Flight Number</th>
       <th>Departing from</th>
       <th>Actions</th>
-      <th>Ticket Seat</th>
-      <th>Ticket Price</th>
     </tr>
   </thead>
   <tbody>
@@ -23,13 +21,6 @@
         <td>
           <a href="/flights/<%= f._id %>">Detail</a>
         </td>
-        <% if (f.tickets.length > 0) { %>
-          <td><%= f.tickets[0].seat %></td>
-          <td><%= f.tickets[0].price %></td>
-        <% } else { %>
-          <td>N/A</td>
-          <td>N/A</td>
-        <% } %>
       </tr>
     <% }); %>
   </tbody>

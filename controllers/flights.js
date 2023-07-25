@@ -1,5 +1,5 @@
 const Flight = require('../models/flight').Flight;
-const Ticket = require('../models/flight').Ticket;
+const Ticket = require('../models/ticket');
 
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
 async function index(req, res) {
   try {
     // Populate the 'tickets' property for each flight
-    const flights = await Flight.find({}).populate('tickets');
+    const flights = await Flight.find({});
 
     res.render('flights/index', { title: 'Your Flights', flights });
   } catch (err) {
@@ -31,9 +31,7 @@ function newFlight(req, res) {
 
 async function create(req, res) {
   try {
-    req.body.flight = req.params.id; // Add the flight property to req.body
-    await Ticket.create(req.body); // Create the ticket
-
+    
     res.redirect(`/flights/${req.params.id}`);
   } catch (err) {
     console.log(err);
@@ -44,6 +42,7 @@ async function create(req, res) {
 async function show(req, res) {
   try {
     const flight = await Flight.findById(req.params.id);
+    console.log(flight)
     // Query the tickets that belong to the flight using the flight's _id
     const tickets = await Ticket.find({ flight: flight._id });
 
@@ -53,6 +52,7 @@ async function show(req, res) {
     res.redirect('/flights'); // Redirect to the flights index or handle the error appropriately
   }
 }
+
 
 async function addDestination(req, res) {
   const flightId = req.params.flightId;
